@@ -17,7 +17,7 @@ function createSnowflakeClient() {
   const initializeStartingValues = () => {
     width = window.innerWidth;
     height = window.innerHeight;
-    cursor = { x: width / 2, y: width / 2 };
+    cursor = { x: width / 2, y: height / 2 };
     particles = [];
   };
 
@@ -38,21 +38,21 @@ function createSnowflakeClient() {
   };
 
   const addParticle = (x: number, y: number, character: string) => {
-    var particle = new Particle(x, y, character);
+    const particle = new Particle(x, y, character);
     particles.push(particle);
   };
 
   const updateParticles = () => {
-    for (var i = 0; i < particles.length; i++) {
+    for (let i = 0; i < particles.length; i++) {
       particles[i].update();
     }
 
     // Remove dead particles when they have reached the end of
     // their life span
-    for (var i = particles.length - 1; i >= 0; i--) {
-      if (particles[i].lifeSpan < 0) {
-        particles[i].die();
-        particles.splice(i, 1);
+    for (let k = particles.length - 1; k >= 0; k--) {
+      if (particles[k].lifeSpan < 0) {
+        particles[k].die();
+        particles.splice(k, 1);
       }
     }
   };

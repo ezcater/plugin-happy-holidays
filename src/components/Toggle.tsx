@@ -72,13 +72,24 @@ export default class HappyHolidaysToggle extends Component<Props, State> {
         <StyledToggle
           onChange={this.handleChange}
           icons={{
-            unchecked: '☃️',
-            checked: '❌'
+            unchecked: (
+              <span role="img" aria-label="on">
+                ☃️
+              </span>
+            ),
+            checked: (
+              <span role="img" aria-label="off">
+                ❌
+              </span>
+            )
           }}
         />
         {isActive && (
           <StyledText>
-            ☃️Happy Holidays from the #ninja-enablement team!
+            <span role="img" aria-label="snowman">
+              ☃️
+            </span>
+            Happy Holidays from the #ninja-enablement team!
           </StyledText>
         )}
       </StyledContainer>
