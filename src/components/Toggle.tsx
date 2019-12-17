@@ -11,8 +11,6 @@ interface State {
 interface Props {}
 
 const StyledToggle = styled('div')`
-  margin-left: 16px;
-
   .switch {
     position: relative;
     display: inline-block;
@@ -98,6 +96,7 @@ const StyledToggle = styled('div')`
 const StyledContainer = styled('div')`
   display: flex;
   align-items: center;
+  width: 800px;
 `;
 
 const StyledText = styled('p')`

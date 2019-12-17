@@ -15,7 +15,6 @@ function createSnowflakeClient() {
   let height;
   let cursor;
   let particles: Particle[];
-  let animationId;
 
   const initializeStartingValues = () => {
     width = window.innerWidth;
@@ -74,22 +73,18 @@ function createSnowflakeClient() {
   );
 
   const loop = () => {
-    const id = window.requestAnimationFrame(loop);
+    window.requestAnimationFrame(loop);
     updateParticles();
-
-    return id;
   };
 
   return {
     initialize: () => {
-      document.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mousemove', onMouseMove);
       window.addEventListener('resize', onWindowResize);
       initializeStartingValues();
-      const id = loop();
-      animationId = id;
     },
     destroy: () => {
-      document.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('resize', onWindowResize);
 
       removeParticles();
