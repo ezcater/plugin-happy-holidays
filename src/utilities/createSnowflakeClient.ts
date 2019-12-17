@@ -82,6 +82,7 @@ function createSnowflakeClient() {
       window.addEventListener('mousemove', onMouseMove);
       window.addEventListener('resize', onWindowResize);
       initializeStartingValues();
+      loop();
     },
     destroy: () => {
       window.removeEventListener('mousemove', onMouseMove);
