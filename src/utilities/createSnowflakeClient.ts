@@ -6,6 +6,8 @@
  */
 
 import Particle from './Particle';
+import throttle from 'lodash.throttle';
+import debounce from 'lodash.debounce';
 
 function createSnowflakeClient() {
   let possibleEmoji = ['❄️'];
@@ -13,6 +15,7 @@ function createSnowflakeClient() {
   let height;
   let cursor;
   let particles: Particle[];
+  let animationId;
 
   const initializeStartingValues = () => {
     width = window.innerWidth;
@@ -24,9 +27,11 @@ function createSnowflakeClient() {
   const onWindowResize = () => {
     width = window.innerWidth;
     height = window.innerHeight;
+
+    removeParticles();
   };
 
-  const onMouseMove = (event: MouseEvent) => {
+  const onMouseMove = throttle((event: MouseEvent) => {
     cursor.x = event.clientX;
     cursor.y = event.clientY;
 
@@ -35,7 +40,7 @@ function createSnowflakeClient() {
       cursor.y,
       possibleEmoji[Math.floor(Math.random() * possibleEmoji.length)]
     );
-  };
+  }, 20);
 
   const addParticle = (x: number, y: number, character: string) => {
     const particle = new Particle(x, y, character);
@@ -57,9 +62,22 @@ function createSnowflakeClient() {
     }
   };
 
+  const removeParticles = debounce(
+    () => {
+      for (var i = particles.length - 1; i >= 0; i--) {
+        particles[i].die();
+        particles.splice(i, 1);
+      }
+    },
+    100,
+    { leading: true, trailing: false }
+  );
+
   const loop = () => {
-    window.requestAnimationFrame(loop);
+    const id = window.requestAnimationFrame(loop);
     updateParticles();
+
+    return id;
   };
 
   return {
@@ -67,16 +85,14 @@ function createSnowflakeClient() {
       document.addEventListener('mousemove', onMouseMove);
       window.addEventListener('resize', onWindowResize);
       initializeStartingValues();
-      loop();
+      const id = loop();
+      animationId = id;
     },
     destroy: () => {
       document.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('resize', onWindowResize);
 
-      for (var i = particles.length - 1; i >= 0; i--) {
-        particles[i].die();
-        particles.splice(i, 1);
-      }
+      removeParticles();
     }
   };
 }

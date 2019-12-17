@@ -6,13 +6,12 @@ import { styled } from '@twilio/flex-ui';
 
 interface State {
   isActive: boolean;
-  snowflakeClient: any;
 }
 
 interface Props {}
 
 const StyledToggle = styled('div')`
-  padding: 10px 0 0 15px;
+  margin-left: 16px;
 
   .switch {
     position: relative;
@@ -102,8 +101,11 @@ const StyledContainer = styled('div')`
 `;
 
 const StyledText = styled('p')`
-  margin-left: 1rem;
+  margin-left: 8px;
+  user-select: none;
 `;
+
+let snowflakeClient = createSnowflakeClient();
 
 export default class HappyHolidaysToggle extends Component<Props, State> {
   constructor(props: Props) {
@@ -112,19 +114,18 @@ export default class HappyHolidaysToggle extends Component<Props, State> {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-      isActive: false,
-      snowflakeClient: createSnowflakeClient()
+      isActive: false
     };
   }
 
   handleChange(event: any) {
     if (event.target.checked) {
       this.setState({ isActive: true });
-      this.state.snowflakeClient.initialize();
+      snowflakeClient = createSnowflakeClient();
+      snowflakeClient.initialize();
     } else {
-      this.state.snowflakeClient.destroy();
+      snowflakeClient.destroy();
       this.setState({
-        snowflakeClient: createSnowflakeClient(),
         isActive: false
       });
     }
