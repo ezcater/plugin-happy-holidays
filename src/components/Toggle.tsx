@@ -1,5 +1,4 @@
 import 'react-toggle/style.css';
-import Toggle from 'react-toggle';
 import React, { Component } from 'react';
 import createSnowflakeClient from 'utilities/createSnowflakeClient';
 import { styled } from '@twilio/flex-ui';

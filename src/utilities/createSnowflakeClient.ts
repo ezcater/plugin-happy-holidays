@@ -15,6 +15,7 @@ function createSnowflakeClient() {
   let height;
   let cursor;
   let particles: Particle[];
+  let iframeEl: HTMLFrameElement;
 
   const initializeStartingValues = () => {
     width = window.innerWidth;
@@ -40,6 +41,17 @@ function createSnowflakeClient() {
       possibleEmoji[Math.floor(Math.random() * possibleEmoji.length)]
     );
   }, 20);
+
+  const onIframeMouseMove = throttle((event: MouseEvent) => {
+    cursor.x = event.clientX + iframeEl.getBoundingClientRect().x;
+    cursor.y = event.clientY + iframeEl.getBoundingClientRect().y;
+
+    addParticle(
+      cursor.x,
+      cursor.y,
+      possibleEmoji[Math.floor(Math.random() * possibleEmoji.length)]
+    );
+  });
 
   const addParticle = (x: number, y: number, character: string) => {
     const particle = new Particle(x, y, character);
@@ -79,12 +91,22 @@ function createSnowflakeClient() {
 
   return {
     initialize: () => {
+      iframeEl = document.getElementById('omnichannel-portal') as any;
+      iframeEl.contentDocument.addEventListener('mousemove', onIframeMouseMove);
+
       window.addEventListener('mousemove', onMouseMove);
       window.addEventListener('resize', onWindowResize);
+
       initializeStartingValues();
       loop();
     },
     destroy: () => {
+      iframeEl = document.getElementById('omnichannel-portal') as any;
+      iframeEl.contentDocument.removeEventListener(
+        'mousemove',
+        onIframeMouseMove
+      );
+
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('resize', onWindowResize);
 
