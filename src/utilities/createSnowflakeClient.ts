@@ -92,7 +92,13 @@ function createSnowflakeClient() {
   return {
     initialize: () => {
       iframeEl = document.getElementById('omnichannel-portal') as any;
-      iframeEl.contentDocument.addEventListener('mousemove', onIframeMouseMove);
+
+      if (iframeEl) {
+        iframeEl.contentDocument.addEventListener(
+          'mousemove',
+          onIframeMouseMove
+        );
+      }
 
       window.addEventListener('mousemove', onMouseMove);
       window.addEventListener('resize', onWindowResize);
@@ -102,10 +108,13 @@ function createSnowflakeClient() {
     },
     destroy: () => {
       iframeEl = document.getElementById('omnichannel-portal') as any;
-      iframeEl.contentDocument.removeEventListener(
-        'mousemove',
-        onIframeMouseMove
-      );
+
+      if (iframeEl) {
+        iframeEl.contentDocument.removeEventListener(
+          'mousemove',
+          onIframeMouseMove
+        );
+      }
 
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('resize', onWindowResize);
